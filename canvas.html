@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            border: 0px;
+            margin: 0px;
+        }
+        .color-cointainer{
+            height:5rem;
+            width:80vw;
+            margin:0 auto;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border:2px solid;
+        }
+        .colors{
+            height:70%;
+            width:20%;
+        }
+        .red{
+            background-color:salmon;
+        }
+        .blue{
+            background-color:lightblue;
+        }
+        .green{
+            background-color:lightgreen;
+        }
+    </style>
+</head>
+<body>
+    <div class="color-cointainer">
+        <div class="colors red"></div>
+        <div class="colors blue"></div>
+        <div class="colors green"></div>
+    </div>
+    <canvas class="board"></canvas>
+    <img src= "">
+    <script>
+        let boardSel=document.querySelector(".board");
+        let colorCont=document.querySelector(".color-cointainer");
+        let colorSel=document.querySelectorAll(".colors");
+        let tool=boardSel.getContext("2d");
+        boardSel.height=window.innerHeight;
+        boardSel.width=window.innerWidth;
+        tool.fillStyle="lightblue";
+        // tool.fillRect(20,20,window.innerWidth /2,window.innerHeight/2);
+        // tool.beginPath();
+        // tool.strokeStyle="green";
+        // tool.moveTo(100,200);
+        // tool.lineTo(300,200);
+        // tool.stroke();
+        // tool.beginPath();
+        // tool.moveTo(200,100);
+        // tool.strokeStyle="blue";
+        // tool.lineTo(100,200); 
+        // tool.stroke();
+        // tool.beginPath();
+        // tool.moveTo(200,100);
+        // tool.strokeStyle="yellow";
+        // tool.lineTo(300,200);
+        // tool.stroke();
+        let isDown=false;
+        tool.strokeStyle="red";
+
+        for(let i=0;i<colorSel.length;i++){
+            colorSel[i].addEventListener("click",function(){
+                if(colorSel[i].classList[1]=="red"){
+                    tool.strokeStyle=colorSel[i].classList[1];
+                }
+                else{
+                    tool.strokeStyle="light"+colorSel[i].classList[1];
+                }
+        })
+               
+            }
+            function getY(y){
+                let obj=colorCont.getBoundingClientRect();
+                return y-obj.height;
+            }
+       
+        boardSel.addEventListener("mousedown",function(e){
+            let x=e.clientX;
+            let y=e.clientY;
+            tool.beginPath();
+            tool.moveTo(x,getY(y));
+            isDown=true;
+
+        })
+        boardSel.addEventListener("mousemove",function(e){
+            if(isDown==true){
+                tool.lineTo(e.clientX,getY(e.clientY));
+                tool.stroke();
+                tool.moveTo(e.clientX,getY(e.clientY));
+            }
+        })
+
+        
+        boardSel.addEventListener("mouseup",function(e){
+            tool.lineTo(e.clientX,getY(e.clientY));
+            tool.stroke();
+            isDown=false;
+        })
+            </script>
+</body>
+</html>
